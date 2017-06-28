@@ -1,0 +1,111 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:ui="http://java.sun.com/jsf/facelets"
+ 	  xmlns:f="http://java.sun.com/jsf/core"
+ 	  xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+ <ui:composition template="/WEB-INF/tags/layout.xhtml">
+  <ui:define name="content">
+
+    	<h:form id="form2">
+    		<p:panel id="panel2" style="margin-bottom:10px;">
+
+       			<h:panelGrid  columns="5" cellpadding="5" >
+           			
+           			<p:outputLabel for="files" value="Files" colspan="1" />
+   					<p:selectOneMenu id="files" 
+						 		     value="#{logsController.logFile.filename}"
+						 		     colspan="5"
+						 		     required="true" >
+						<f:selectItem itemLabel="Select file" 
+					  				  itemValue="" 
+					  				  noSelectionOption="true" />
+						<f:selectItems value="#{logsController.logFiles}" 
+					   				   var="item" 
+					   				   itemLabel="#{item}" 
+					   				   itemValue="#{item}"/>
+					</p:selectOneMenu>
+
+					<p:outputLabel for="rows" 
+								   value="Limit" colspan="1" />
+					<p:inputNumber id="rows" 
+								   value="#{logsController.logFile.numberOfLastRows}" 
+								   symbol=" last rows" 
+								   symbolPosition="s"
+								   decimalPlaces="0" />  
+								   
+					<p:outputLabel />
+					
+					<p:outputLabel for="startIndex" 
+								   value="Start index of date in line" 
+								   colspan="1" />
+					<p:inputNumber id="startIndex" 
+								   value="#{logsController.logFile.startIndexOfDateInLog}" 
+								   symbolPosition="s"
+								   decimalPlaces="0"/>
+								   
+               		<p:outputLabel for="dateFormat" 
+								   value="Date format" 
+								   colspan="1" />
+					<p:inputText id="dateFormat" 
+								 value="#{logsController.logFile.logDateFormat}" />
+								 					
+					<p:splitButton value="Read log" 
+								   actionListener="#{logsController.timelineLogFile}" 
+								   update="timeline"
+								   icon="ui-icon-check"
+								   colspan="2">
+					   <p:menuitem value="Refresh" 
+								   actionListener="#{logsController.listLogFiles}" 
+								   update=":form2:panel2" 
+								   icon="ui-icon-arrowrefresh-1-w" />
+					</p:splitButton>
+						
+		        </h:panelGrid>
+
+	    	</p:panel>
+	    	
+		</h:form>
+				
+		<p:timeline id="timeline" 
+					value="#{logsController.logFile.model}" 
+					style="min-height:350px;" 
+					height="350px"
+			        selectable="true" 
+			        zoomable="true" 
+			        moveable="true" 
+			        stackEvents="true" 
+			        axisOnTop="true"              
+			        eventStyle="box" 
+			        showCurrentTime="true" 
+			        showNavigation="false">
+
+			        <p:ajax event="select" 
+			        		listener="#{logsController.onSelect}"
+			        		update="dialog1" 
+			        		oncomplete="#{p:widgetVar('dialog1')}.show()"/>
+			           
+		</p:timeline>
+		
+		<p:dialog id="dialog1"
+				  header="#{logsController.timelineHeader}" 
+				  widgetVar="dialog1" 
+				  height="600px !important"
+				  width="800px"
+				  resizable="false">
+					
+		<p:editor id="editorDialog" 
+			  	  colspan="4"
+ 			  	  widgetVar="editorWidget" 
+ 			  	  value="#{logsController.timelineContent}" 
+ 			      controls= ""
+ 			      style="height:400px !important;" />
+		 			      	   
+		</p:dialog>
+	
+	</ui:define>
+ </ui:composition>
+</h:body>
+</html>

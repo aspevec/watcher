@@ -1,0 +1,110 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:ui="http://java.sun.com/jsf/facelets"
+ 	  xmlns:f="http://java.sun.com/jsf/core"
+ 	  xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+ <ui:composition template="/WEB-INF/tags/layout.xhtml">
+  <ui:define name="content">
+	
+       		<h:form id="form1">
+       			<p:panel id="panel1" style="margin-bottom:5px;">
+        			<h:panelGrid  columns="8" cellpadding="5" >
+            			
+            			<p:outputLabel for="project" value="Project: " />
+            			<p:selectOneMenu id="project" 
+            							 value="#{configController.project}" 
+            							 style="width:150px"
+            							 required="true">
+                			<p:ajax listener="#{configController.onProjectChange}" 
+                					update="config" />
+                			<f:selectItem itemLabel="Select project" 
+                						  itemValue="" 
+                						  noSelectionOption="true" />
+                			<f:selectItems value="#{configController.projects}" />
+            			</p:selectOneMenu>
+ 
+            			<p:outputLabel for="config" 
+            						   value="Configuration: " />
+            			<p:selectOneMenu id="config" 
+            							 value="#{configController.configFile.filename}" 
+            							 style="width:150px"
+            							 required="true">
+                			<f:selectItem itemLabel="Select config file" 
+                						  itemValue="" 
+                						  noSelectionOption="true" />
+                			<f:selectItems value="#{configController.configFiles}" />
+            			</p:selectOneMenu>
+            			
+						<p:splitButton value="Read configuration" 
+									   actionListener="#{configController.readConfigFile}" 
+									   update=":form1"
+									   icon="ui-icon-check"
+									   colspan="2">
+							<p:menuitem value="Refresh projects" 
+									   actionListener="#{configController.listProjects}" 
+									   update=":form1:panel1" 
+									   icon="ui-icon-arrowrefresh-1-w" />
+						   <p:menuitem value="Refresh configurations" 
+									   actionListener="#{configController.onProjectChange}" 
+									   update=":form1:panel1" 
+									   icon="ui-icon-arrowrefresh-1-w" />
+						</p:splitButton>
+						
+			        </h:panelGrid>
+ 
+		    	</p:panel>
+		    	
+				<p:editor id="editor" 
+					  	  colspan="4"
+		 			  	  widgetVar="editorWidget" 
+		 			  	  value="#{configController.configFile.content}" 
+		 			  	  style="height:300px !important; margin-bottom:10px;"
+		 			      />
+
+		 		</h:form> 
+		 		      		 
+   				<h:form id="form2">
+   					<p:panel id="panel2" style="margin-bottom:5px;">
+       				<h:panelGrid  columns="6" >
+       			
+	       				<p:outputLabel for="host" 
+	            					   value="Host: " />
+		       			<p:inputText id="host" 
+									 value="#{configController.host}"
+									 label="Host" 
+									 required="true"/>
+							
+						<p:outputLabel for="port" 
+	            					   value="Port: " />		 
+						<p:inputNumber id="port" 
+							   		   value="#{configController.port}" 
+							   		   decimalPlaces="0"
+							   		   emptyValue="80" />  
+										 				 
+						<p:commandButton value="Ping" 
+										 id="pingButton" 
+										 update="form2" 
+										 actionListener="#{configController.checkPing}" 
+										 styleClass="ui-priority-primary" />
+		
+						<p:commandButton value="Telnet" 
+										 id="telnetButton" 
+										 update="form2" 
+										 actionListener="#{configController.checkTelnet}" 
+										 styleClass="ui-priority-primary" />
+					</h:panelGrid>
+		 			</p:panel>
+	       			<p:editor id="result" 
+						  	  colspan="4"
+			 			  	  widgetVar="editorWidget1" 
+			 			  	  value="#{configController.result}"/>
+			 			  	  
+       			</h:form>  
+	
+	</ui:define>
+ </ui:composition>
+</h:body>
+</html>

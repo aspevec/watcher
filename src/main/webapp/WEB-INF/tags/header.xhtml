@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:p="http://primefaces.org/ui"
+ >
+   <body>
+      <ui:composition> 
+        
+      	<h:form>
+			<p:menuButton value="Log">
+		    	<p:menuitem value="Read log" 
+		        			url="/views/logReader.xhtml" 
+		            		icon="ui-icon-document"/>
+        		<p:menuitem value="Log timeline" 
+        					url="/views/logTimeline.xhtml" 
+        					icon="fa-heartbeat"/>
+    		</p:menuButton>
+    		
+    		<p:menuButton value="Configuration">
+        		<p:menuitem value="Read configuration" 
+        					url="/views/configReader.xhtml" 
+        					icon="ui-icon-wrench"/>
+    		</p:menuButton>
+    		
+    		<p:menuButton value="Keystore">
+        		<p:menuitem value="Read keystore" 
+        					url="/views/keystoreReader.xhtml" 
+        					icon="ui-icon-wrench"/>
+        		<p:menuitem value="JVM keystore" 
+        					url="/views/keystoreJVM.xhtml" 
+        					icon="ui-icon-wrench"/>
+    		</p:menuButton>
+    		
+		</h:form>
+				
+      </ui:composition> 
+   </body>
+</html>

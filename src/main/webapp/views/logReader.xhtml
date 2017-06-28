@@ -1,0 +1,67 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:ui="http://java.sun.com/jsf/facelets"
+ 	  xmlns:f="http://java.sun.com/jsf/core"
+ 	  xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+ <ui:composition template="/WEB-INF/tags/layout.xhtml">
+  <ui:define name="content">
+		
+    	<h:form id="form2">
+    		<p:panel id="panel2" style="margin-bottom:10px;">
+
+       			<h:panelGrid  columns="8" cellpadding="5" >
+           			
+           			<p:outputLabel for="files" value="Files: " colspan="1" />
+   					<p:selectOneMenu id="files" 
+						 		     value="#{logsController.logFile.filename}"
+						 		     colspan="5"
+						 		     required="true" >
+						<f:selectItem itemLabel="Select file" 
+					  				  itemValue="" 
+					  				  noSelectionOption="true" />
+						<f:selectItems value="#{logsController.logFiles}" 
+					   				   var="item" 
+					   				   itemLabel="#{item}" 
+					   				   itemValue="#{item}"/>
+					</p:selectOneMenu>
+
+					<p:outputLabel for="rows" 
+								   value="Limit: " colspan="1" />
+					<p:inputNumber id="rows" 
+								   value="#{logsController.logFile.numberOfLastRows}" 
+								   symbol=" last rows" 
+								   symbolPosition="s"
+								   decimalPlaces="0"
+								   emptyValue="0" />  
+               							
+					<p:splitButton value="Read log" 
+								   actionListener="#{logsController.readLogFile}" 
+								   update="editor"
+								   icon="ui-icon-check"
+								   colspan="2">
+					   <p:menuitem value="Refresh" 
+								   actionListener="#{logsController.listLogFiles}" 
+								   update=":form2:panel2" 
+								   icon="ui-icon-arrowrefresh-1-w" />
+					</p:splitButton>
+					
+		        </h:panelGrid>
+
+	    	</p:panel>
+	    	
+		</h:form>
+			
+		<p:editor id="editor" 
+			  	  colspan="4"
+ 			  	  widgetVar="editorWidget" 
+ 			  	  value="#{logsController.logFile.content}" 
+ 			      controls= ""
+ 			      style="height:400px !important" />		
+	
+	</ui:define>
+ </ui:composition>
+</h:body>
+</html>
