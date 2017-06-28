@@ -16,6 +16,11 @@ import com.watcher.highlighter.Log4jSyntaxHighlighter;
 import com.watcher.model.LogFile;
 import com.watcher.service.LogReaderService;
 
+/**
+ * Service implementation for reading all log files in Tomcat.
+ * 
+ * @author Aendy
+ */
 public class LogReaderServiceImpl implements LogReaderService {
 
 	/** Logger. */

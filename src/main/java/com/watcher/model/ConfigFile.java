@@ -3,9 +3,7 @@ package com.watcher.model;
 import java.io.Serializable;
 
 /**
- * Object representing readed file.
- * 
- * It has content of readed file with addition of reading parameters.
+ * Domain object representing parameters and content of configuration file.
  * 
  * @author Aendy
  */
