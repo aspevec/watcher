@@ -132,47 +132,37 @@ public class Log4jModelServiceImpl {
 	 * @param logFile log file with all parametars of file
 	 * @param line current line of file
 	 */
-	private void createEventFromLine(LogFileModel logFileModel, LogFile logFile, String line) {
+	private void createEventFromLine(LogFileModel logFileModel, 
+									 LogFile logFile, 
+									 String line) {
 		
 		if (line.contains(Log4jSyntaxHighlighter.LOG4J_DEBUG_TAG)) {
 			
-			logFileModel.setCurrentEvent(
-				new TimelineEvent(new LogFileEvent(Log4jSyntaxHighlighter.LOG4J_DEBUG_TAG,
-						   						   line), 
-								  WatcherDateUtil.string2Date(line.substring(logFile.getStartIndexOfDateInLog(), 
-										  									 logFile.getEndIndexOfDateInLog()),
-		 								  				     logFile.getLogDateFormat()),
-		 						  false, null, "timeline-event-debug"));
+			logFileModel.setCurrentEvent(createTimelineEvent(Log4jSyntaxHighlighter.LOG4J_DEBUG_TAG, 
+					 										 line,
+					 										 "timeline-event-debug",
+					 										 logFile));
 			
 		} else if (line.contains(Log4jSyntaxHighlighter.LOG4J_WARNING_TAG)) {
 		
-			logFileModel.setCurrentEvent(
-				new TimelineEvent(new LogFileEvent(Log4jSyntaxHighlighter.LOG4J_WARNING_TAG,
-												   line),
-								  WatcherDateUtil.string2Date(line.substring(logFile.getStartIndexOfDateInLog(), 
-										  									 logFile.getEndIndexOfDateInLog()),
-										  					  logFile.getLogDateFormat()),
-								  false, null, "timeline-event-warning"));
-		
+			logFileModel.setCurrentEvent(createTimelineEvent(Log4jSyntaxHighlighter.LOG4J_WARNING_TAG, 
+					 										 line,
+					 										 "timeline-event-warning",
+					 										 logFile));
+			
 		} else if (line.contains(Log4jSyntaxHighlighter.LOG4J_ERROR_TAG)) {
 		
-			logFileModel.setCurrentEvent(
-				new TimelineEvent(new LogFileEvent(Log4jSyntaxHighlighter.LOG4J_ERROR_TAG,
-												   line),
-								  WatcherDateUtil.string2Date(line.substring(logFile.getStartIndexOfDateInLog(), 
-										  									 logFile.getEndIndexOfDateInLog()),
-										  					  logFile.getLogDateFormat()),
-								  false, null, "timeline-event-error"));
-		
+			logFileModel.setCurrentEvent(createTimelineEvent(Log4jSyntaxHighlighter.LOG4J_ERROR_TAG, 
+					 										 line,
+					 										 "timeline-event-error",
+					 										 logFile));
+			
 		} else if (line.contains(Log4jSyntaxHighlighter.LOG4J_SEVERE_TAG)) {
 		
-			logFileModel.setCurrentEvent(
-				new TimelineEvent(new LogFileEvent(Log4jSyntaxHighlighter.LOG4J_SEVERE_TAG,
-												   line),
-								  WatcherDateUtil.string2Date(line.substring(logFile.getStartIndexOfDateInLog(), 
-										  									 logFile.getEndIndexOfDateInLog()),
-										  					  logFile.getLogDateFormat()),
-								  false, null, "timeline-event-severe"));
+			logFileModel.setCurrentEvent(createTimelineEvent(Log4jSyntaxHighlighter.LOG4J_SEVERE_TAG, 
+															 line,
+															 "timeline-event-severe",
+															 logFile));
 		
 		} else if (line.contains(Log4jSyntaxHighlighter.LOG4J_INFO_TAG)) {
 
@@ -184,6 +174,33 @@ public class Log4jModelServiceImpl {
 			
 		}
 
+	}
+	
+	/**
+	 * Create {@link TimelineEvent} from parameters.
+	 * 
+	 * @param name name of the event tag
+	 * @param error first line of event
+	 * @param cssClass css class to represent object in timeline
+	 * @param logFile logFile
+	 * @return
+	 */
+	private TimelineEvent createTimelineEvent(String name, 
+											  String error, 
+											  String cssClass, 
+											  LogFile logFile) {
+		
+		String eventDate = error.substring(logFile.getStartIndexOfDateInLog(), 
+									  	   logFile.getEndIndexOfDateInLog());
+		
+		return new TimelineEvent(new LogFileEvent(name,
+												  error),
+								 WatcherDateUtil.string2Date(eventDate,
+		  									 				 logFile.getLogDateFormat()),
+		  						 false, 
+		  						 null, 
+		  						 cssClass);
+		
 	}
 	
 }
