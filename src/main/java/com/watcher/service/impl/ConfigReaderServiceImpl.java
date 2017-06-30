@@ -6,7 +6,6 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -15,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.watcher.highlighter.ConfigSyntaxHighlighter;
 import com.watcher.model.ConfigFile;
 import com.watcher.service.ConfigReaderService;
+import com.watcher.service.ProjectReaderService;
 
 /**
  * Service implementation for configuration reader of project in Tomcat.
@@ -25,61 +25,6 @@ public class ConfigReaderServiceImpl implements ConfigReaderService {
 	
 	/** Logger. */
 	private final Logger logger = Logger.getLogger(ConfigReaderServiceImpl.class);
-	
-	@Override
-	public List<String> getListOfProjects() {
-		
-		File root = new File(rootProjectPath);
-		
-		if (!root.isDirectory()) {
-			
-			//throw exception ili nesto
-		
-			return null;
-			
-		}
-		
-		final List<String> webappsIgnoreFolders = new ArrayList<String>(
-													Arrays.asList("docs",
-															  	  "examples",
-															  	  "host-manager",
-															  	  "manager",
-															  	  "ROOT"));
-		
-		List<String> result = new ArrayList<String>();
-		
-		File[] listOfAllProjects = root.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				
-				if (webappsIgnoreFolders.contains(pathname.getName())) {
-					
-					return false;
-					
-				}
-				
-				if (pathname.getAbsolutePath().endsWith(projectExtension)) {
-					
-					return false;
-					
-				}
-				
-				return true;
-				
-			}
-			
-		});
-
-		for (File file : listOfAllProjects) {
-			
-			result.add(file.getName());
-			
-		}
-		
-		return result;
-		
-	}
 	
 	@Override
 	public List<String> getListOfProjectsPropertieFiles(String selectedProject) {
@@ -127,14 +72,9 @@ public class ConfigReaderServiceImpl implements ConfigReaderService {
 	 */
 	private String getFullProjectPath(String selectedProject) {
 		
-		String result = rootProjectPath.endsWith("\\") 
-						? rootProjectPath 
-						: rootProjectPath.concat("\\");
+		String result = projectReaderService.getFullProjectPath(selectedProject);
 		
-		return result
-					.concat(selectedProject)
-					.concat("\\")
-					.concat(projectConfigurationPath);
+		return result.concat(projectConfigurationPath);
 		
 	}
 	
@@ -229,28 +169,18 @@ public class ConfigReaderServiceImpl implements ConfigReaderService {
 		
 	}
 	
-	/** Path to webapps folder on Tomcat. */
-	private String rootProjectPath;
-	
 	/** Default path to configuration folder inside project. */
 	private String projectConfigurationPath;
 	
 	/** Extension of configuration files. */
 	private String configurationExtension;
 
-	/** Extension of project WAR file. */
-	private String projectExtension;
-	
 	/** Bean {@link ConfigSyntaxHighlighter}. */
 	private ConfigSyntaxHighlighter configSyntaxHighlighter;
-	/**
-	 * 
-	 * @param rootProjectPath IOC
-	 */
-	public void setRootProjectPath(String rootProjectPath) {
-		this.rootProjectPath = rootProjectPath;
-	}
 
+	/** Bean {@link ProjectReaderService}. */
+	private ProjectReaderService projectReaderService;
+	
 	/**
 	 * 
 	 * @param projectConfigurationPath IOC
@@ -269,18 +199,18 @@ public class ConfigReaderServiceImpl implements ConfigReaderService {
 
 	/**
 	 * 
-	 * @param projectExtension IOC
-	 */
-	public void setProjectExtension(String projectExtension) {
-		this.projectExtension = projectExtension;
-	}
-
-	/**
-	 * 
 	 * @param configSyntaxHighlighter IOC
 	 */
 	public void setConfigSyntaxHighlighter(ConfigSyntaxHighlighter configSyntaxHighlighter) {
 		this.configSyntaxHighlighter = configSyntaxHighlighter;
+	}
+
+	/**
+	 * 
+	 * @param projectReaderService IOC
+	 */
+	public void setProjectReaderService(ProjectReaderService projectReaderService) {
+		this.projectReaderService = projectReaderService;
 	}
 	
 }

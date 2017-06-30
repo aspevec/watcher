@@ -1,7 +1,5 @@
 package com.watcher.service;
 
-import java.util.List;
-
 import com.watcher.model.LogFile;
 
 /**
@@ -10,15 +8,8 @@ import com.watcher.model.LogFile;
  * @author Aendy
  *
  */
-public interface LogReaderService {
+public interface LogReaderService extends LogAbstractService {
 
-	/**
-	 * Method for loading list of log files in Tomcat logs folder.
-	 * 
-	 * @return list of log files in logs folder
-	 */
-	public List<String> getListOfLogFiles();
-	
 	/**
 	 * Method for reading file specified in parameters from {@link LogFile} object.
 	 * 
@@ -27,12 +18,5 @@ public interface LogReaderService {
 	 * @return logFile object filled with data from file
 	 */
 	public LogFile readFile(LogFile logFile); 
-	
-	/**
-	 * Method for initializing log file.
-	 * 
-	 * @return new instance of {@link LogFile}
-	 */
-	public LogFile initializeLogFile();
 	
 }

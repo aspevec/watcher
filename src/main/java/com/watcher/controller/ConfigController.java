@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import com.watcher.model.ConfigFile;
 import com.watcher.service.ConfigReaderService;
 import com.watcher.service.ReachableService;
+import com.watcher.service.ProjectReaderService;;
 
 @ManagedBean(name = "configController")
 @ViewScoped
@@ -53,7 +54,7 @@ public class ConfigController extends AbstractController implements Serializable
 	 */
 	public void listProjects() {
 
-		setProjects(configReaderService.getListOfProjects());
+		setProjects(projectReaderService.getListOfProjects());
 
 	}
 	
@@ -156,11 +157,22 @@ public class ConfigController extends AbstractController implements Serializable
 	
 	//Services
 	
+	@ManagedProperty(value = "#{projectReaderService}")
+	private ProjectReaderService projectReaderService;
+	
 	@ManagedProperty(value = "#{configReaderService}")
 	private ConfigReaderService configReaderService;
 
 	@ManagedProperty(value = "#{reachableService}")
 	private ReachableService reachableService;
+
+	/**
+	 * 
+	 * @param projectReaderService IOC
+	 */
+	public void setProjectReaderService(ProjectReaderService projectReaderService) {
+		this.projectReaderService = projectReaderService;
+	}
 
 	/**
 	 * 

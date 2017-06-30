@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 
 import com.watcher.model.KeyStoreFile;
 import com.watcher.service.KeystoreReaderService;
+import com.watcher.service.ProjectReaderService;
 
 @ManagedBean(name = "keystoreController")
 @ViewScoped
@@ -43,7 +44,7 @@ public class KeystoreController extends AbstractController implements Serializab
 	 */
 	public void listProjects() {
 
-		setProjects(keystoreReaderService.getListOfProjects());
+		setProjects(projectReaderService.getListOfProjects());
 
 	}
 	
@@ -122,9 +123,20 @@ public class KeystoreController extends AbstractController implements Serializab
 	
 	//Services
 	
+	@ManagedProperty(value = "#{projectReaderService}")
+	private ProjectReaderService projectReaderService;
+	
 	@ManagedProperty(value = "#{keystoreReaderService}")
 	private KeystoreReaderService keystoreReaderService;
 
+	/**
+	 * 
+	 * @param projectReaderService IOC
+	 */
+	public void setProjectReaderService(ProjectReaderService projectReaderService) {
+		this.projectReaderService = projectReaderService;
+	}
+	
 	/**
 	 * 
 	 * @param keystoreReaderService IOC

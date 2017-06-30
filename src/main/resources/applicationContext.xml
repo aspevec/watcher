@@ -19,16 +19,17 @@
  
     <!-- <import resource="classpath:databaseContext.xml" /> -->
     
-	<bean id="logReaderService" class="com.watcher.service.impl.LogReaderServiceImpl">
-	    <property name="log4jSyntaxHighlighter" ref="log4jSyntaxHighlighter" />
-	    <property name="rootLogPath" value="${watcher.rootLogPath}" />
+    <bean id="logAbstractService" class="com.watcher.service.impl.LogAbstractServiceImpl" abstract="true">
+    	<property name="rootLogPath" value="${watcher.rootLogPath}" />
 	    <property name="defaultDateFormat" value="${watcher.defaultDateFormat}" />
 	</bean>
+    
+	<bean id="logReaderService" class="com.watcher.service.impl.LogReaderServiceImpl" parent="logAbstractService">
+	    <property name="log4jSyntaxHighlighter" ref="log4jSyntaxHighlighter" />
+	</bean>
 	
-	<bean id="logTimelineService" class="com.watcher.service.impl.LogTimelineServiceImpl">
+	<bean id="logTimelineService" class="com.watcher.service.impl.LogTimelineServiceImpl" parent="logAbstractService">
 	    <property name="log4jModelServiceImpl" ref="log4jModelServiceImpl" />
-	    <property name="rootLogPath" value="${watcher.rootLogPath}" />
-	    <property name="defaultDateFormat" value="${watcher.defaultDateFormat}" />
 	</bean>
 	
 	<bean id="log4jSyntaxHighlighter" class="com.watcher.highlighter.Log4jSyntaxHighlighter">
@@ -40,26 +41,27 @@
 	
 	<bean id="configReaderService" class="com.watcher.service.impl.ConfigReaderServiceImpl">
 	    <property name="configSyntaxHighlighter" ref="configSyntaxHighlighter" />
-	    <property name="rootProjectPath" value="${watcher.rootProjectPath}" />
+	    <property name="projectReaderService" ref="projectReaderService" />
 	    <property name="projectConfigurationPath" value="${watcher.projectConfigurationPath}" />
 	    <property name="configurationExtension" value="${watcher.configurationExtension}" />
-	    <property name="projectExtension" value="${watcher.projectExtension}" />
 	</bean>
 	
 	<bean id="configSyntaxHighlighter" class="com.watcher.highlighter.ConfigSyntaxHighlighter">
 		<property name="configCommentColor" value="${config.configCommentColor}" />
 	</bean>
 	 
-	<bean id="reachableService" class="com.watcher.service.impl.ReachableServiceImpl">
-	</bean>
+	<bean id="reachableService" class="com.watcher.service.impl.ReachableServiceImpl" />
 	
-	<bean id="log4jModelServiceImpl" class="com.watcher.log.timeline.Log4jModelServiceImpl">
-	</bean>
+	<bean id="log4jModelServiceImpl" class="com.watcher.log.timeline.Log4jModelServiceImpl" />
 	
 	<bean id="keystoreReaderService" class="com.watcher.service.impl.KeystoreReaderServiceImpl">
-	    <property name="rootProjectPath" value="${watcher.rootProjectPath}" />
+	    <property name="projectReaderService" ref="projectReaderService" />
 	    <property name="projectKeystorePath" value="${watcher.projectKeystorePath}" />
 	    <property name="keystoreExtension" value="${watcher.keystoreExtension}" />
+	</bean>
+	
+	<bean id="projectReaderService" class="com.watcher.service.impl.ProjectReaderServiceImpl">
+	    <property name="rootProjectPath" value="${watcher.rootProjectPath}" />
 	    <property name="projectExtension" value="${watcher.projectExtension}" />
 	</bean>
 	

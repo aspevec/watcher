@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import org.apache.log4j.Logger;
 import com.watcher.model.CertificateFile;
 import com.watcher.model.KeyStoreFile;
 import com.watcher.service.KeystoreReaderService;
+import com.watcher.service.ProjectReaderService;
 import com.watcher.util.WatcherStringUtil;
 
 /**
@@ -32,61 +32,6 @@ public class KeystoreReaderServiceImpl implements KeystoreReaderService {
 
 	/** Logger. */
 	private final Logger logger = Logger.getLogger(KeystoreReaderServiceImpl.class);
-	
-	@Override
-	public List<String> getListOfProjects() {
-		
-		File root = new File(rootProjectPath);
-		
-		if (!root.isDirectory()) {
-			
-			//throw exception ili nesto
-		
-			return null;
-			
-		}
-		
-		final List<String> webappsIgnoreFolders = new ArrayList<String>(
-													Arrays.asList("docs",
-															  	  "examples",
-															  	  "host-manager",
-															  	  "manager",
-															  	  "ROOT"));
-		
-		List<String> result = new ArrayList<String>();
-		
-		File[] listOfAllProjects = root.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				
-				if (webappsIgnoreFolders.contains(pathname.getName())) {
-					
-					return false;
-					
-				}
-				
-				if (pathname.getAbsolutePath().endsWith(projectExtension)) {
-					
-					return false;
-					
-				}
-				
-				return true;
-				
-			}
-			
-		});
-
-		for (File file : listOfAllProjects) {
-			
-			result.add(file.getName());
-			
-		}
-		
-		return result;
-		
-	}
 	
 	@Override
 	public List<String> getListOfProjectsKeystoreFiles(String selectedProject) {
@@ -134,14 +79,9 @@ public class KeystoreReaderServiceImpl implements KeystoreReaderService {
 	 */
 	private String getFullProjectPath(String selectedProject) {
 		
-		String result = rootProjectPath.endsWith("\\") 
-						? rootProjectPath 
-						: rootProjectPath.concat("\\");
+		String result = projectReaderService.getFullProjectPath(selectedProject);
 		
-		return result
-					.concat(selectedProject)
-					.concat("\\")
-					.concat(projectKeystorePath);
+		return result.concat(projectKeystorePath);
 		
 	}
 	
@@ -355,26 +295,15 @@ public class KeystoreReaderServiceImpl implements KeystoreReaderService {
 		
 	}
 	
-	/** Path to webapps folder on Tomcat. */
-	private String rootProjectPath;
-	
 	/** Default path to configuration folder inside project. */
 	private String projectKeystorePath;
 	
 	/** Extension of configuration files. */
 	private String keystoreExtension;
 
-	/** Extension of project WAR file. */
-	private String projectExtension;
-
-	/**
-	 * 
-	 * @param rootProjectPath IOC
-	 */
-	public void setRootProjectPath(String rootProjectPath) {
-		this.rootProjectPath = rootProjectPath;
-	}
-
+	/** Bean {@link ProjectReaderService}. */
+	private ProjectReaderService projectReaderService;
+	
 	/**
 	 * 
 	 * @param projectKeystorePath IOC
@@ -393,10 +322,10 @@ public class KeystoreReaderServiceImpl implements KeystoreReaderService {
 
 	/**
 	 * 
-	 * @param projectExtension IOC
+	 * @param projectReaderService IOC
 	 */
-	public void setProjectExtension(String projectExtension) {
-		this.projectExtension = projectExtension;
+	public void setProjectReaderService(ProjectReaderService projectReaderService) {
+		this.projectReaderService = projectReaderService;
 	}
-
+	
 }

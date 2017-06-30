@@ -4,13 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-import org.primefaces.model.timeline.TimelineModel;
 
 import com.watcher.highlighter.Log4jSyntaxHighlighter;
 import com.watcher.model.LogFile;
@@ -21,49 +17,8 @@ import com.watcher.service.LogReaderService;
  * 
  * @author Aendy
  */
-public class LogReaderServiceImpl implements LogReaderService {
+public class LogReaderServiceImpl extends LogAbstractServiceImpl implements LogReaderService {
 
-	/** Logger. */
-	private final Logger logger = Logger.getLogger(LogReaderServiceImpl.class);
-
-	@Override
-	public List<String> getListOfLogFiles() {
-	
-		File root = new File(rootLogPath);
-		
-		if (!root.isDirectory()) {
-			
-			//throw exception ili nesto TODO
-		
-			return null;
-			
-		}
-		
-		List<String> result = new ArrayList<String>();
-		
-		for (File file : root.listFiles()) {
-			
-			result.add(file.getName());
-			
-		}
-		
-		return result;
-		
-	}
-	
-	@Override
-	public LogFile initializeLogFile() {
-	
-		LogFile logFile = new LogFile();
-		
-		logFile.setModel				(new TimelineModel());
-		logFile.setLogDateFormat		(defaultDateFormat);
-		logFile.setStartIndexOfDateInLog(0);
-		
-		return logFile;
-		
-	}
-	
 	@Override
 	public LogFile readFile(LogFile logFile) {
 	
@@ -90,21 +45,6 @@ public class LogReaderServiceImpl implements LogReaderService {
 		}
 		
 		return logFile;
-	}
-	
-	/**
-	 * Method for constructing full file path from file name and root log file path.
-	 * 
-	 * @param logFile log file in which we are doing mapping
-	 */
-	private void fillLogFilePath(LogFile logFile) {
-	
-		String result = rootLogPath.endsWith("\\")
-						? rootLogPath
-						: rootLogPath.concat("\\");
-	
-		logFile.setFilepath(result.concat(logFile.getFilename()));
-
 	}
 	
 	/**
@@ -249,22 +189,8 @@ public class LogReaderServiceImpl implements LogReaderService {
 	
 	}
 
-	/** Path to logs folder on Tomcat. */
-	private String rootLogPath;
-	
 	/** Bean {@link Log4jSyntaxHighlighter}. */
 	private Log4jSyntaxHighlighter log4jSyntaxHighlighter;
-	
-	/** Default simple date format to use when reading date from log4j. */
-	private String defaultDateFormat;
-	
-	/**
-	 * 
-	 * @param rootLogPath IOC
-	 */
-	public void setRootLogPath(String rootLogPath) {
-		this.rootLogPath = rootLogPath;
-	}
 	
 	/**
 	 * 
@@ -274,12 +200,4 @@ public class LogReaderServiceImpl implements LogReaderService {
 		this.log4jSyntaxHighlighter = log4jSyntaxHighlighter;
 	}
 
-	/**
-	 * 
-	 * @param defaultDateFormat IOC
-	 */
-	public void setDefaultDateFormat(String defaultDateFormat) {
-		this.defaultDateFormat = defaultDateFormat;
-	}
-	
 }

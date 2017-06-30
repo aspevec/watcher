@@ -14,13 +14,6 @@ import com.watcher.model.ConfigFile;
 public interface ConfigReaderService {
 	
 	/**
-	 * Method for loading list of projects available on Tomcat.
-	 * 
-	 * @return list of projects on Tomcat
-	 */
-	public List<String> getListOfProjects();
-	
-	/**
 	 * Method for loading list of configuration files on selected project.
 	 * 
 	 * @param selectedProject project on which to read configuration
