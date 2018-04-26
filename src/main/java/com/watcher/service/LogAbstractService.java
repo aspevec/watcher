@@ -11,18 +11,18 @@ import com.watcher.model.LogFile;
  */
 public interface LogAbstractService {
 
-	/**
-	 * Method for loading list of log files in Tomcat logs folder.
-	 * 
-	 * @return list of log files in logs folder
-	 */
-	public List<String> getListOfLogFiles();
-	
-	/**
-	 * Method for initializing log file.
-	 * 
-	 * @return new instance of {@link LogFile}
-	 */
-	public LogFile initializeLogFile();
+    /**
+     * Method for loading list of log files in Tomcat logs folder.
+     * 
+     * @return list of log files in logs folder
+     */
+    public List<String> getListOfLogFiles();
+
+    /**
+     * Method for initializing log file.
+     * 
+     * @return new instance of {@link LogFile}
+     */
+    public LogFile initializeLogFile();
 
 }

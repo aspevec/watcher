@@ -19,121 +19,119 @@ import com.watcher.service.ReachableService;
  */
 public class ReachableServiceImpl implements ReachableService {
 
-	/** Logger. */
-	private final Logger logger = Logger.getLogger(ReachableServiceImpl.class);
-	
-	@Override
-	public String checkPing(String host) {
-		
-		return runSystemCommand("ping " 
-							  + host);
-		
-	}
+    /** Logger. */
+    private final Logger logger = Logger.getLogger(ReachableServiceImpl.class);
 
-	/**
-	 * Method for execute command in command line and return result.
-	 * 
-	 * @param command to execute
-	 * 
-	 * @return result of command
-	 */
-	private String runSystemCommand(String command) {
+    @Override
+    public String checkPing(String host) {
 
-		String result = "";
-		
-	    try {
-	    	
-	        Process p = Runtime.getRuntime().exec(command);
-	        
-	        BufferedReader inputStream = new BufferedReader(
-	                new InputStreamReader(p.getInputStream()));
+        return runSystemCommand("ping " + host);
 
-	        String sCurrentLine = inputStream.readLine();
-	        
-	        // reading output stream of the command
-	        while (sCurrentLine != null) {
+    }
 
-	        	result = result 
-	        			+ sCurrentLine 
-	        			+ "<br>";;
-	        	
-	        	sCurrentLine = inputStream.readLine();
-	        	
-	        }
-	        
-	    } catch (Exception e) {
-	    	
-	    	logger.error(ExceptionUtils.getStackTrace(e));
-	        
-	    } 
-	    
-	    return result;
-	    
-	}
-	
-	@Override
-	public String checkTelnet(String host, 
-							  Integer port) {
+    /**
+     * Method for execute command in command line and return result.
+     * 
+     * @param command to execute
+     * 
+     * @return result of command
+     */
+    private String runSystemCommand(String command) {
 
-		String result = null;
-		
-		if (telnetConnect(host, port)) {
-			
-			result = "Telnet connection available!";
-			
-		} else {
-			
-			result = "Telnet connection not available!";
-			
-		}
-		
-		return result;
-		
-	}
-	
-	/**
-	 * Method for checking if telnet connection is availabe.
-	 * 
-	 * @param host host to check
-	 * @param port port of host to check
-	 * 
-	 * @return true if telnet connection can be set
-	 */
-	private boolean telnetConnect(String host, 
-								 int port) {
-		
-		boolean result = false;
-		
-		TelnetClient telnet = new TelnetClient();
-				
-		try {
-            
-			telnet.connect(host, port);
-			
-			result = true;
-			
-        } catch (IOException e) {
-        	
-        	result = false;
-        	
-        	logger.error(ExceptionUtils.getStackTrace(e));
-        	
-        } finally {
-        	
-        	try {
-        		
-				telnet.disconnect();
-				
-			} catch (IOException e) {
+        String result = "";
 
-				logger.error(ExceptionUtils.getStackTrace(e));
-				
-			}
-        	
+        try {
+
+            Process p = Runtime.getRuntime().exec(command);
+
+            BufferedReader inputStream = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            String sCurrentLine = inputStream.readLine();
+
+            // reading output stream of the command
+            while (sCurrentLine != null) {
+
+                result = result 
+                        + sCurrentLine 
+                        + "<br>";;
+
+                        sCurrentLine = inputStream.readLine();
+
+            }
+
+        } catch (Exception e) {
+
+            logger.error(ExceptionUtils.getStackTrace(e));
+
+        } 
+
+        return result;
+
+    }
+
+    @Override
+    public String checkTelnet(String host, 
+                              Integer port) {
+
+        String result = null;
+
+        if (telnetConnect(host, port)) {
+
+            result = "Telnet connection available!";
+
+        } else {
+
+            result = "Telnet connection not available!";
+
         }
-		
-		return result;
 
-	}
-	
+        return result;
+
+    }
+
+    /**
+     * Method for checking if telnet connection is availabe.
+     * 
+     * @param host host to check
+     * @param port port of host to check
+     * 
+     * @return true if telnet connection can be set
+     */
+    private boolean telnetConnect(String host, 
+                                  int port) {
+
+        boolean result = false;
+
+        TelnetClient telnet = new TelnetClient();
+
+        try {
+
+            telnet.connect(host, port);
+
+            result = true;
+
+        } catch (IOException e) {
+
+            result = false;
+
+            logger.error(ExceptionUtils.getStackTrace(e));
+
+        } finally {
+
+            try {
+
+                telnet.disconnect();
+
+            } catch (IOException e) {
+
+                logger.error(ExceptionUtils.getStackTrace(e));
+
+            }
+
+        }
+
+        return result;
+
+    }
+
 }

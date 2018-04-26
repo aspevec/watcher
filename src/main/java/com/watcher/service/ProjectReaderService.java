@@ -11,21 +11,21 @@ import java.util.List;
  *
  */
 public interface ProjectReaderService {
-	
-	/**
-	 * Method for loading list of projects available on Tomcat.
-	 * 
-	 * @return list of projects on Tomcat
-	 */
-	public List<String> getListOfProjects();
-	
-	/**
-	 * Method for returning path to selected project.
-	 * 
-	 * @param selectedProject name of selected project
-	 * 
-	 * @return full path to selected project
-	 */
-	public String getFullProjectPath(String selectedProject);
-	
+
+    /**
+     * Method for loading list of projects available on Tomcat.
+     * 
+     * @return list of projects on Tomcat
+     */
+    public List<String> getListOfProjects();
+
+    /**
+     * Method for returning path to selected project.
+     * 
+     * @param selectedProject name of selected project
+     * 
+     * @return full path to selected project
+     */
+    public String getFullProjectPath(String selectedProject);
+
 }

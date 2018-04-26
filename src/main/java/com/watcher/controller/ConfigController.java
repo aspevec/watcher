@@ -18,176 +18,175 @@ import com.watcher.service.ProjectReaderService;;
 @ViewScoped
 public class ConfigController extends AbstractController implements Serializable {
 
-	/** Serial version UID. */
-	private static final long serialVersionUID = 1L;
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
 
-	/** Configuration file. */
-	private ConfigFile configFile = new ConfigFile();
+    /** Configuration file. */
+    private ConfigFile configFile = new ConfigFile();
 
-	/** Selected project. */
-	private String project;
+    /** Selected project. */
+    private String project;
 
-	/** List of available projects on Tomcat. */
-	private List<String> projects = new ArrayList<String>();
+    /** List of available projects on Tomcat. */
+    private List<String> projects = new ArrayList<String>();
 
-	/** List of available configuration files on selected project. */
-	private List<String> configFiles = new ArrayList<String>();
+    /** List of available configuration files on selected project. */
+    private List<String> configFiles = new ArrayList<String>();
 
-	/** Host for which we can check availability. */
-	private String host;
-	
-	/** Specific port of host. */
-	private Integer port;
-	
-	/** Result of availability check. */
-	private String result;
-	
-	@PostConstruct
-	public void init() {
+    /** Host for which we can check availability. */
+    private String host;
 
-		listProjects();
+    /** Specific port of host. */
+    private Integer port;
 
-	}
-	
-	/**
-	 * Method for listing project 
-	 */
-	public void listProjects() {
+    /** Result of availability check. */
+    private String result;
 
-		setProjects(projectReaderService.getListOfProjects());
+    @PostConstruct
+    public void init() {
 
-	}
-	
-	/**
-	 * When project changes refresh list of available config files.
-	 */
-	public void onProjectChange() {
+        listProjects();
 
-		setConfigFiles(configReaderService
-				.getListOfProjectsPropertieFiles(getProject()));
+    }
 
-	}
+    /**
+     * Method for listing project 
+     */
+    public void listProjects() {
 
-	/**
-	 * Method for reading configuration file.
-	 */
-	public void readConfigFile() {
+        setProjects(projectReaderService.getListOfProjects());
 
-		setConfigFile(configReaderService.readFile(getConfigFile(), 
-												   getProject()));
+    }
 
-	}
-	
-	/**
-	 * Method for checking ping of host.
-	 */
-	public void checkPing() {
-		
-		setResult(reachableService.checkPing(getHost()));
-		
-	}
+    /**
+     * When project changes refresh list of available config files.
+     */
+    public void onProjectChange() {
 
-	/**
-	 * Method for checking telnet connectivity of host.
-	 */
-	public void checkTelnet() {
-		
-		setResult(reachableService.checkTelnet(getHost(), 
-											   getPort()));
-		
-	}
-	
-	//getters & setters
-	
-	public ConfigFile getConfigFile() {
-		return configFile;
-	}
+        setConfigFiles(configReaderService.getListOfProjectsPropertieFiles(getProject()));
 
-	public void setConfigFile(ConfigFile configFile) {
-		this.configFile = configFile;
-	}
+    }
 
-	public String getProject() {
-		return project;
-	}
+    /**
+     * Method for reading configuration file.
+     */
+    public void readConfigFile() {
 
-	public void setProject(String project) {
-		this.project = project;
-	}
+        setConfigFile(configReaderService.readFile(getConfigFile(), 
+                                                   getProject()));
 
-	public List<String> getProjects() {
-		return projects;
-	}
+    }
 
-	public void setProjects(List<String> projects) {
-		this.projects = projects;
-	}
+    /**
+     * Method for checking ping of host.
+     */
+    public void checkPing() {
 
-	public List<String> getConfigFiles() {
-		return configFiles;
-	}
+        setResult(reachableService.checkPing(getHost()));
 
-	public void setConfigFiles(List<String> configFiles) {
-		this.configFiles = configFiles;
-	}
+    }
 
-	public String getHost() {
-		return host;
-	}
+    /**
+     * Method for checking telnet connectivity of host.
+     */
+    public void checkTelnet() {
 
-	public void setHost(String host) {
-		this.host = host;
-	}
-	
-	public Integer getPort() {
-		return port;
-	}
+        setResult(reachableService.checkTelnet(getHost(), 
+                                               getPort()));
 
-	public void setPort(Integer port) {
-		this.port = port;
-	}
+    }
 
-	public String getResult() {
-		return result;
-	}
+    //getters & setters
 
-	public void setResult(String result) {
-		this.result = result;
-	}
-	
-	//Services
-	
-	@ManagedProperty(value = "#{projectReaderService}")
-	private ProjectReaderService projectReaderService;
-	
-	@ManagedProperty(value = "#{configReaderService}")
-	private ConfigReaderService configReaderService;
+    public ConfigFile getConfigFile() {
+        return configFile;
+    }
 
-	@ManagedProperty(value = "#{reachableService}")
-	private ReachableService reachableService;
+    public void setConfigFile(ConfigFile configFile) {
+        this.configFile = configFile;
+    }
 
-	/**
-	 * 
-	 * @param projectReaderService IOC
-	 */
-	public void setProjectReaderService(ProjectReaderService projectReaderService) {
-		this.projectReaderService = projectReaderService;
-	}
+    public String getProject() {
+        return project;
+    }
 
-	/**
-	 * 
-	 * @param configReaderService IOC
-	 */
-	public void setConfigReaderService(ConfigReaderService configReaderService) {
-		this.configReaderService = configReaderService;
-	}
+    public void setProject(String project) {
+        this.project = project;
+    }
 
-	/**
-	 * 
-	 * @param reachableService IOC
-	 */
-	public void setReachableService(ReachableService reachableService) {
-		this.reachableService = reachableService;
-	}
+    public List<String> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<String> projects) {
+        this.projects = projects;
+    }
+
+    public List<String> getConfigFiles() {
+        return configFiles;
+    }
+
+    public void setConfigFiles(List<String> configFiles) {
+        this.configFiles = configFiles;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    //Services
+
+    @ManagedProperty(value = "#{projectReaderService}")
+    private ProjectReaderService projectReaderService;
+
+    @ManagedProperty(value = "#{configReaderService}")
+    private ConfigReaderService configReaderService;
+
+    @ManagedProperty(value = "#{reachableService}")
+    private ReachableService reachableService;
+
+    /**
+     * 
+     * @param projectReaderService IOC
+     */
+    public void setProjectReaderService(ProjectReaderService projectReaderService) {
+        this.projectReaderService = projectReaderService;
+    }
+
+    /**
+     * 
+     * @param configReaderService IOC
+     */
+    public void setConfigReaderService(ConfigReaderService configReaderService) {
+        this.configReaderService = configReaderService;
+    }
+
+    /**
+     * 
+     * @param reachableService IOC
+     */
+    public void setReachableService(ReachableService reachableService) {
+        this.reachableService = reachableService;
+    }
 
 }

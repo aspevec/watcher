@@ -17,132 +17,131 @@ import com.watcher.service.ProjectReaderService;
 @ViewScoped
 public class KeystoreController extends AbstractController implements Serializable {
 
-	/** Serial version UID. */
-	private static final long serialVersionUID = 1L;
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
 
-	/** KeyStore file. */
-	private KeyStoreFile keyStoreFile = new KeyStoreFile();
+    /** KeyStore file. */
+    private KeyStoreFile keyStoreFile = new KeyStoreFile();
 
-	/** Selected project. */
-	private String project;
+    /** Selected project. */
+    private String project;
 
-	/** List of available projects on Tomcat. */
-	private List<String> projects = new ArrayList<String>();
+    /** List of available projects on Tomcat. */
+    private List<String> projects = new ArrayList<String>();
 
-	/** List of available keystore files on selected project. */
-	private List<String> keyStoreFiles = new ArrayList<String>();
+    /** List of available keystore files on selected project. */
+    private List<String> keyStoreFiles = new ArrayList<String>();
 
-	@PostConstruct
-	public void init() {
+    @PostConstruct
+    public void init() {
 
-		listProjects();
+        listProjects();
 
-	}
-	
-	/**
-	 * Method for listing project 
-	 */
-	public void listProjects() {
+    }
 
-		setProjects(projectReaderService.getListOfProjects());
+    /**
+     * Method for listing project 
+     */
+    public void listProjects() {
 
-	}
-	
-	/**
-	 * When project changes refresh list of available keystore files.
-	 */
-	public void onProjectChange() {
+        setProjects(projectReaderService.getListOfProjects());
 
-		setKeyStoreFiles(keystoreReaderService
-				.getListOfProjectsKeystoreFiles(getProject()));
+    }
 
-	}
+    /**
+     * When project changes refresh list of available keystore files.
+     */
+    public void onProjectChange() {
 
-	/**
-	 * Method for reading keystore file.
-	 */
-	public void readKeystoreFile() {
-		
-		setKeyStoreFile(keystoreReaderService.readFile(getKeyStoreFile(), 
-													   getProject()));
-		
-	}
-	
-	/**
-	 * Method for reading JVM keystore file.
-	 */
-	public void readKeystoreJVM() {
-		
-		setKeyStoreFile(keystoreReaderService.readJVMKeyStore());
-		
-	}
-	
-	/**
-	 * Method for set keystore to default JVM.
-	 */
-	public void setKeystoreJVM() {
-		
-		keystoreReaderService.setKeyStore(getKeyStoreFile(), 
-										  getProject());
-		
-	}
-	
-	//getters & setters
-	
-	public KeyStoreFile getKeyStoreFile() {
-		return keyStoreFile;
-	}
+        setKeyStoreFiles(keystoreReaderService.getListOfProjectsKeystoreFiles(getProject()));
 
-	public void setKeyStoreFile(KeyStoreFile keyStoreFile) {
-		this.keyStoreFile = keyStoreFile;
-	}
+    }
 
-	public List<String> getKeyStoreFiles() {
-		return keyStoreFiles;
-	}
+    /**
+     * Method for reading keystore file.
+     */
+    public void readKeystoreFile() {
 
-	public void setKeyStoreFiles(List<String> keyStoreFiles) {
-		this.keyStoreFiles = keyStoreFiles;
-	}
+        setKeyStoreFile(keystoreReaderService.readFile(getKeyStoreFile(), 
+                                                       getProject()));
 
-	public String getProject() {
-		return project;
-	}
+    }
 
-	public void setProject(String project) {
-		this.project = project;
-	}
+    /**
+     * Method for reading JVM keystore file.
+     */
+    public void readKeystoreJVM() {
 
-	public List<String> getProjects() {
-		return projects;
-	}
+        setKeyStoreFile(keystoreReaderService.readJVMKeyStore());
 
-	public void setProjects(List<String> projects) {
-		this.projects = projects;
-	}
-	
-	//Services
-	
-	@ManagedProperty(value = "#{projectReaderService}")
-	private ProjectReaderService projectReaderService;
-	
-	@ManagedProperty(value = "#{keystoreReaderService}")
-	private KeystoreReaderService keystoreReaderService;
+    }
 
-	/**
-	 * 
-	 * @param projectReaderService IOC
-	 */
-	public void setProjectReaderService(ProjectReaderService projectReaderService) {
-		this.projectReaderService = projectReaderService;
-	}
-	
-	/**
-	 * 
-	 * @param keystoreReaderService IOC
-	 */
-	public void setKeystoreReaderService(KeystoreReaderService keystoreReaderService) {
-		this.keystoreReaderService = keystoreReaderService;
-	}
+    /**
+     * Method for set keystore to default JVM.
+     */
+    public void setKeystoreJVM() {
+
+        keystoreReaderService.setKeyStore(getKeyStoreFile(), 
+                                          getProject());
+
+    }
+
+    //getters & setters
+
+    public KeyStoreFile getKeyStoreFile() {
+        return keyStoreFile;
+    }
+
+    public void setKeyStoreFile(KeyStoreFile keyStoreFile) {
+        this.keyStoreFile = keyStoreFile;
+    }
+
+    public List<String> getKeyStoreFiles() {
+        return keyStoreFiles;
+    }
+
+    public void setKeyStoreFiles(List<String> keyStoreFiles) {
+        this.keyStoreFiles = keyStoreFiles;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public List<String> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<String> projects) {
+        this.projects = projects;
+    }
+
+    //Services
+
+    @ManagedProperty(value = "#{projectReaderService}")
+    private ProjectReaderService projectReaderService;
+
+    @ManagedProperty(value = "#{keystoreReaderService}")
+    private KeystoreReaderService keystoreReaderService;
+
+    /**
+     * 
+     * @param projectReaderService IOC
+     */
+    public void setProjectReaderService(ProjectReaderService projectReaderService) {
+        this.projectReaderService = projectReaderService;
+    }
+
+    /**
+     * 
+     * @param keystoreReaderService IOC
+     */
+    public void setKeystoreReaderService(KeystoreReaderService keystoreReaderService) {
+        this.keystoreReaderService = keystoreReaderService;
+    }
 
 }
